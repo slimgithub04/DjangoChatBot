@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord Professeur - Eduverse</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        /* Thème Professeur */
+        :root {
+            --prof-blue: #3d7ab8;
+            --prof-dark: #1a1a1a;
+            --prof-light: #f8f9fa;
+            --prof-accent: #ffa500;
+        }
+
+        body {
+            background-color: var(--prof-dark);
+            color: var(--prof-light);
+            font-family: 'Ubuntu', sans-serif;
+            padding: 20px;
+        }
+
+        .professor-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--prof-dark);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--prof-blue);
+        }
+
+        .professor-container h2 {
+            color: var(--prof-blue);
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-align: center;
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        .professor-container h2 i {
+            margin-right: 10px;
+            color: var(--prof-accent);
+        }
+
+        .card {
+            background-color: var(--prof-dark);
+            border: 1px solid var(--prof-blue);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-title {
+            color: var(--prof-blue);
+            font-weight: 700;
+        }
+
+        .card-text {
+            color: var(--prof-light);
+        }
+
+        .btn-primary {
+            background-color: var(--prof-blue);
+            border: 1px solid var(--prof-blue);
+            color: var(--prof-light);
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--prof-accent);
+            border-color: var(--prof-accent);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="professor-container">
+        <h2><i class="fas fa-chalkboard-teacher"></i> Tableau de Bord Professeur - Eduverse</h2>
+
+        <!-- Cartes pour les fonctionnalités -->
+        <div class="row">
+            <!-- Générer des Questions -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-question-circle"></i> Générer des Questions</h5>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ question_form.as_p }}
+                            <button type="submit" name="generate_questions" class="btn btn-primary">Générer</button>
+                        </form>
+                        {% if questions %}
+                            <div class="mt-4">
+                                <h6>Questions Générées :</h6>
+                                <pre>{{ questions }}</pre>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Créer des Scénarios -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-book"></i> Créer des Scénarios</h5>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ scenario_form.as_p }}
+                            <button type="submit" name="generate_scenarios" class="btn btn-primary">Créer</button>
+                        </form>
+                        {% if scenario %}
+                            <div class="mt-4">
+                                <h6>Scénario Généré :</h6>
+                                <pre>{{ scenario }}</pre>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Générer des Quiz -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-pencil-alt"></i> Générer des Quiz</h5>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ quiz_form.as_p }}
+                            <button type="submit" name="generate_quiz" class="btn btn-primary">Générer</button>
+                        </form>
+                        {% if quiz %}
+                            <div class="mt-4">
+                                <h6>Quiz Généré :</h6>
+                                <pre>{{ quiz }}</pre>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <!-- Générer des Résumés de Cours -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-file-alt"></i> Résumés de Cours</h5>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ summary_form.as_p }}
+                            <button type="submit" name="generate_summary" class="btn btn-primary">Générer</button>
+                        </form>
+                        {% if summary %}
+                            <div class="mt-4">
+                                <h6>Résumé Généré :</h6>
+                                <pre>{{ summary }}</pre>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestion du Contenu -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-folder-open"></i> Gestion du Contenu</h5>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ content_form.as_p }}
+                            <button type="submit" name="manage_content" class="btn btn-primary">Télécharger</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts pour les animations -->
+    <script>
+        // Ajouter une animation aux cartes au chargement de la page
+        const cards = document.querySelectorAll('.card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.2}s`;
+            card.classList.add('animate__animated', 'animate__fadeInUp');
+        });
+    </script>
+</body>
+</html>

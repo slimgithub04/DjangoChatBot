@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Content - Eduverse</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        /* Eduverse Theme */
+        :root {
+            --edu-primary: #4e73df; /* Educational Blue */
+            --edu-secondary: #ff6f61; /* Gamified Orange */
+            --edu-accent: #ffd700; /* Gold for Accent */
+            --edu-light: #f8f9fa;
+            --edu-dark: #1a1a1a;
+            --edu-gradient: linear-gradient(135deg, var(--edu-primary), var(--edu-secondary));
+            --edu-universe: radial-gradient(circle, rgba(78, 115, 223, 0.1), rgba(255, 111, 97, 0.1));
+        }
+
+        body {
+            background: var(--edu-dark);
+            color: var(--edu-light);
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start; /* Align to the top */
+            justify-content: center;
+            overflow: auto; /* Enable scrolling */
+            position: relative;
+        }
+
+        /* Animated Background (Eduverse Universe) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--edu-universe);
+            z-index: -1;
+            animation: moveUniverse 20s linear infinite;
+        }
+
+        @keyframes moveUniverse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .upload-container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(26, 26, 26, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--edu-primary);
+            animation: slideInUp 1s ease-in-out;
+            margin-top: 20px; /* Ensure the top is visible */
+        }
+
+        .upload-container h2 {
+            color: var(--edu-primary);
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-align: center;
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        .upload-container h2 i {
+            margin-right: 10px;
+            color: var(--edu-accent);
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--edu-primary);
+            color: var(--edu-light);
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--edu-accent);
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--edu-gradient);
+            border: none;
+            padding: 10px 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: var(--edu-light);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 111, 97, 0.5);
+        }
+
+        .response-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(78, 115, 223, 0.1);
+            border-radius: 10px;
+            border: 1px solid var(--edu-primary);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .response-container h3 {
+            color: var(--edu-accent);
+            margin-bottom: 15px;
+        }
+
+        .response-container p {
+            color: var(--edu-light);
+        }
+
+        /* Micro Button */
+        .micro-button {
+            background: var(--edu-gradient);
+            border: none;
+            color: var(--edu-light);
+            padding: 10px 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .micro-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 111, 97, 0.7);
+        }
+
+        .micro-button.active {
+            background: #dc3545; /* Red to indicate recording */
+            animation: none;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h2><i class="fas fa-upload"></i> Upload Content</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="pdf_file" class="form-label">Upload PDF Files</label>
+                <input type="file" class="form-control" id="pdf_file" name="pdf_files" multiple>
+            </div>
+            <div class="mb-3">
+                <label for="video_file" class="form-label">Upload Video Files</label>
+                <input type="file" class="form-control" id="video_file" name="video_files" multiple>
+            </div>
+            <div class="mb-3">
+                <label for="text_content" class="form-label">Text Content</label>
+                <textarea class="form-control" id="text_content" name="text_content" rows="5"></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Or Record Your Voice</label>
+                <div class="d-flex align-items-center gap-3">
+                    <select id="languageSelect" class="form-select" style="max-width: 150px;">
+                        <option value="en-US">English (US)</option>
+                        <option value="fr-FR">French</option>
+                        <option value="es-ES">Spanish</option>
+                        <option value="de-DE">German</option>
+                        <option value="it-IT">Italian</option>
+                        <option value="zh-CN">Chinese</option>
+                        <option value="ja-JP">Japanese</option>
+                        <option value="ru-RU">Russian</option>
+                        <option value="pt-BR">Portuguese</option>
+                        <option value="hi-IN">Hindi</option>
+                        <option value="ar-SA">Arabic</option>
+                    </select>
+                    <button type="button" class="micro-button" id="microButton">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                </div>
+                <div id="transcriptionOutput" class="form-control mt-3" style="height: auto; min-height: 100px;"></div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-check"></i> Upload
+            </button>
+        </form>
+
+        <!-- Display Error or Success Messages -->
+        {% if error %}
+            <div class="alert alert-danger mt-4">
+                <h4><i class="fas fa-exclamation-circle"></i> Error</h4>
+                <p>{{ error }}</p>
+            </div>
+        {% endif %}
+
+        {% if success %}
+            <div class="alert alert-success mt-4">
+                <h4><i class="fas fa-check-circle"></i> Success</h4>
+                <p>Files have been uploaded and processed successfully.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Scripts for Animations and Voice Transcription -->
+    <script>
+        // Voice Transcription
+        const microButton = document.getElementById('microButton');
+        const transcriptionOutput = document.getElementById('transcriptionOutput');
+        const languageSelect = document.getElementById('languageSelect');
+        const textContent = document.getElementById('text_content');
+        let recognition;
+
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = true; // Keep the microphone open
+            recognition.interimResults = false;
+            recognition.lang = languageSelect.value;
+
+            recognition.onstart = () => {
+                microButton.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+                microButton.classList.add('active');
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[event.results.length - 1][0].transcript;
+                // Append the transcription to existing content
+                textContent.value += (textContent.value ? " " : "") + transcript;
+                transcriptionOutput.textContent += (transcriptionOutput.textContent ? " " : "") + transcript;
+            };
+
+            recognition.onend = () => {
+                microButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                microButton.classList.remove('active');
+            };
+
+            microButton.addEventListener('click', () => {
+                if (microButton.classList.contains('active')) {
+                    recognition.stop();
+                } else {
+                    recognition.lang = languageSelect.value; // Set selected language
+                    recognition.start();
+                }
+            });
+
+            languageSelect.addEventListener('change', () => {
+                recognition.lang = languageSelect.value; // Update language on change
+            });
+        } else {
+            microButton.disabled = true;
+            microButton.innerHTML = '<i class="fas fa-microphone-slash"></i> (Not Supported)';
+        }
+
+        // Add animations to elements
+        const formElements = document.querySelectorAll('.form-control, .btn-primary');
+        formElements.forEach((element, index) => {
+            element.style.animationDelay = `${index * 0.2}s`;
+            element.classList.add('animate__animated', 'animate__fadeInUp');
+        });
+    </script>
+</body>
+</html>
